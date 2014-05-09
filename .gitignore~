@@ -19,5 +19,3 @@
 *.exe
 *.out
 *.app
-
-ANN/build/faces
