@@ -1,0 +1,1 @@
+/usr/bin/c++   -g    CMakeFiles/ann.dir/main.cpp.o  -o ann -rdynamic 

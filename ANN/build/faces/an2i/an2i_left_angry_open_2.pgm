@@ -1,0 +1,110 @@
+//---------------------------FREE IMAGE---------------------------------
+void FreeImage(int ***fimage, int N)
+{
+	for(int i=0; i<N; i++)
+		delete (*fimage)[i];
+	delete *fimage;
+}
+
+//----------------------------READ IMAGE--------------------------------
+void ReadImage(char fname[], int ***fimage, int& M, int& N, int& Q)
+{
+	int i, j;
+	char d;
+
+	char header [100], *ptr;
+	ifstream ifp;
+
+	ifp.open(fname, ios::in);
+
+	if (!ifp)
+	{
+		cout << "Can't read image: <" << fname << '>' << endl;
+		getch();
+		exit(1);
+	}
+
+	ifp.getline(header,100,'\n');
+	if((header[0]!='P') || header[1]!='5')   /* 'P5' Formay */
+	{
+		cout << "Image <" << fname << "> is not in binary PGM 'P5' format." << endl;
+		getch();
+		exit(1);
+	}
+
+	ifp.getline(header,100,'\n');
+	while(header[0]=='#')
+		ifp.getline(header,100,'\n');
+
+	M=strtol(header,&ptr,0);
+	N=atoi(ptr);
+
+	ifp.getline(header,100,'\n');
+
+	Q=strtol(header,&ptr,0);
+
+	*fimage = new int* [N];
+	for(i=0; i<N; i++)
+		(*fimage)[i] = new int[M];
+
+	for(i=0; i<N; i++)
+	{
+		for(j=0; j<M; j++)
+		{
+			d = ifp.get();
+			(*fimage)[i][j]= (int)d;
+		}
+	}
+}
+
+//----------------------------WriteImage--------------------------------
+void WriteImage(char fname[], int **fimage, int M, int N, int Q)
+{
+	int i, j, c;
+	ofstream ofp;
+
+	ofp.open(fname, ios::out);
+	if (!ofp)
+	{
+		cout << "Can't open file: " << fname << endl;
+		getch();
+		exit(1);
+	}
+
+	ofp << "P5" << endl << "# Comments" << endl;
+	ofp << M << " " << N << endl;
+	ofp << Q << endl;
+
+	c=0;
+	for (i=0; i<N; i++)
+	{
+		for (j=0; j<M; j++)
+		{
+			ofp << (char)fimage[i][j];
+		}
+	}
+
+	ofp.close();
+
+	cout << "\nFile <" << fname << "> saved.";
+}
+
+//-----------------------------Main-------------------------------------
+void main(void)
+{
+	int i, j;
+	int N, M, Q;		// N=Rows   M=Cols   Q=GreyLevels
+	int **fimage;		// int **I 2-D Array of Image
+	char infile[40];        // name of input file
+	char outfile[40];	// name of output image file
+
+
+	cout << "Enter name of *.pgm INPUT image file: ? ";
+	cin  >> infile;
+	cout << "Enter name of *.pgm OUTPUT image file: ? ";
+	cin  >> outfile;
+
+	ReadImage(infile, &fimage, M, N, Q);	// Memory created for fimage
+	WriteImage(outfile, fimage, M, N, Q);	// Save image to file
+	FreeImage(&fimage, N);           	// Clear memory
+}

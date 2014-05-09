@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/snooze/projects/ANN/image.h
+
+/home/snooze/projects/ANN/main.cpp
+iostream
+-
+fstream
+-
+time.h
+-
+math.h
+-
+stdlib.h
+-
+cstring
+-
+image.h
+/home/snooze/projects/ANN/image.h
+

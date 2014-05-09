@@ -1,0 +1,4 @@
+project(ann)
+
+add_executable(ann pgmb_io.cpp main.cpp)
+
